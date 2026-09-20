@@ -8,6 +8,7 @@ import { ReceiptModal } from './ReceiptModal';
 import { calculateItemPricing, calculateCartSummary } from '../../utils/bundleEngine';
 import { playTapSound, playSuccessSound } from '../../utils/audio';
 import { recordSale } from '../../db/db';
+import { pushSaleToCloud } from '../../firebase/sync';
 import confetti from 'canvas-confetti';
 
 interface PosTerminalProps {
@@ -176,6 +177,13 @@ export const PosTerminal: React.FC<PosTerminalProps> = ({
     try {
       const newSaleId = await recordSale(saleRecord);
       const completedRecord = { ...saleRecord, id: newSaleId };
+
+      // Push to cloud Firestore in background
+      if (settings.cloudSyncEnabled && settings.boothId) {
+        pushSaleToCloud(settings.boothId, completedRecord).catch(err => {
+          console.debug('Cloud sync queued/pending', err);
+        });
+      }
 
       if (settings.soundEnabled) {
         playSuccessSound();

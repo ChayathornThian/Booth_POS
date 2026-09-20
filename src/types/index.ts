@@ -67,6 +67,15 @@ export interface CategorySummary {
   subCategories: string[];
 }
 
+export interface FirebaseConfig {
+  apiKey: string;
+  authDomain: string;
+  projectId: string;
+  storageBucket: string;
+  messagingSenderId: string;
+  appId: string;
+}
+
 export interface AppSettings {
   boothName: string;
   promptPayId: string;
@@ -75,4 +84,8 @@ export interface AppSettings {
   soundEnabled: boolean;
   googleSheetsUrl?: string;
   lastSyncedAt?: string;
+  cloudSyncEnabled?: boolean;
+  boothId?: string; // Unique shared key for the booth, e.g. "boothsuay-2026"
+  firebaseConfig?: FirebaseConfig;
+  appMode?: 'cashier' | 'monitor'; // Cashier runs terminal, Monitor views live analytics
 }

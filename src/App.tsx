@@ -7,7 +7,11 @@ import { InventoryView } from './components/inventory/InventoryView';
 import { ReportsView } from './components/reports/ReportsView';
 import { SettingsModal } from './components/settings/SettingsModal';
 import { GoogleSheetsModal } from './components/sync/GoogleSheetsModal';
+import { CloudSyncModal } from './components/sync/CloudSyncModal';
+import { LiveMonitorDashboard } from './components/dashboard/LiveMonitorDashboard';
 import { syncToGoogleSheets } from './utils/googleSheetsSync';
+import { initFirebase } from './firebase/config';
+import { subscribeToCloudBooth } from './firebase/sync';
 
 export function App() {
   const [currentTab, setCurrentTab] = useState<'pos' | 'inventory' | 'reports'>('pos');
@@ -18,9 +22,15 @@ export function App() {
     promptPayId: '0812345678',
     promptPayName: 'Booth PromptPay',
     artists: ['INK', 'Field', 'General'],
-    soundEnabled: true
+    soundEnabled: true,
+    cloudSyncEnabled: false,
+    boothId: 'art-booth-01'
   });
+
+  const [isMonitorMode, setIsMonitorMode] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [isCloudModalOpen, setIsCloudModalOpen] = useState(false);
+  const [isCloudConnected, setIsCloudConnected] = useState(false);
   const [isGoogleSheetsOpen, setIsGoogleSheetsOpen] = useState(false);
   const [isSyncingToSheets, setIsSyncingToSheets] = useState(false);
   const [sheetsSyncStatus, setSheetsSyncStatus] = useState<string | null>(null);
@@ -64,10 +74,59 @@ export function App() {
       await refreshSettings();
       await refreshProducts();
       await refreshSales();
+
+      // Check URL query parameters for ?mode=monitor or ?booth=xxx
+      const params = new URLSearchParams(window.location.search);
+      const mode = params.get('mode');
+      const booth = params.get('booth');
+
+      if (mode === 'monitor') {
+        setIsMonitorMode(true);
+      }
+      if (booth) {
+        setSettings(prev => ({ ...prev, boothId: booth }));
+      }
+
       setIsLoading(false);
     }
     init();
   }, [refreshSettings, refreshProducts, refreshSales]);
+
+  // Firebase real-time subscription for live sync across devices
+  useEffect(() => {
+    if (!settings.cloudSyncEnabled || !settings.boothId) {
+      setIsCloudConnected(false);
+      return;
+    }
+
+    const { db: firestore } = initFirebase(settings.firebaseConfig);
+    if (!firestore) {
+      setIsCloudConnected(false);
+      return;
+    }
+
+    setIsCloudConnected(true);
+
+    const unsubscribe = subscribeToCloudBooth(
+      settings.boothId,
+      remoteProducts => {
+        if (remoteProducts.length > 0) {
+          setProducts(remoteProducts);
+        }
+      },
+      remoteSales => {
+        if (remoteSales.length > 0) {
+          setSales(remoteSales);
+        }
+      },
+      err => {
+        console.error('Cloud booth sync error', err);
+        setIsCloudConnected(false);
+      }
+    );
+
+    return () => unsubscribe();
+  }, [settings.cloudSyncEnabled, settings.boothId, settings.firebaseConfig]);
 
   const handleSaveSettings = async (newSettings: AppSettings) => {
     setSettings(newSettings);
@@ -118,6 +177,20 @@ export function App() {
     );
   }
 
+  // Live Remote Monitor Dashboard Mode
+  if (isMonitorMode) {
+    return (
+      <LiveMonitorDashboard
+        products={products}
+        sales={sales}
+        settings={settings}
+        onSwitchToTerminal={() => setIsMonitorMode(false)}
+        isCloudConnected={isCloudConnected}
+      />
+    );
+  }
+
+  // Standard Cashier Terminal Mode
   return (
     <div className="h-screen w-screen flex flex-col bg-slate-100 overflow-hidden font-sans">
       {/* Top Navbar */}
@@ -125,9 +198,12 @@ export function App() {
         currentTab={currentTab}
         onSelectTab={setCurrentTab}
         onOpenSettings={() => setIsSettingsOpen(true)}
+        onOpenCloudModal={() => setIsCloudModalOpen(true)}
+        onSwitchToMonitor={() => setIsMonitorMode(true)}
         settings={settings}
         onToggleSound={handleToggleSound}
         cartCount={0}
+        isCloudConnected={isCloudConnected}
       />
 
       {/* Main Screen Views */}
@@ -165,6 +241,17 @@ export function App() {
         onClose={() => setIsSettingsOpen(false)}
         settings={settings}
         onSaveSettings={handleSaveSettings}
+      />
+
+      {/* Cloud Database & Live Monitor Settings Modal */}
+      <CloudSyncModal
+        isOpen={isCloudModalOpen}
+        onClose={() => setIsCloudModalOpen(false)}
+        settings={settings}
+        products={products}
+        onSaveSettings={handleSaveSettings}
+        isCloudConnected={isCloudConnected}
+        onRefreshCloudSync={() => {}}
       />
 
       {/* Google Sheets Sync Modal */}
