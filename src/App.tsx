@@ -23,8 +23,8 @@ export function App() {
     promptPayName: 'Booth PromptPay',
     artists: ['INK', 'Field', 'General'],
     soundEnabled: true,
-    cloudSyncEnabled: false,
-    boothId: 'art-booth-01'
+    cloudSyncEnabled: true,
+    boothId: 'boothsuay'
   });
 
   const [isMonitorMode, setIsMonitorMode] = useState(false);

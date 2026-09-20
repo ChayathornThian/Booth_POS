@@ -25,7 +25,9 @@ export async function getSettings(): Promise<AppSettings> {
     promptPayId: '0812345678',
     promptPayName: 'Booth PromptPay',
     artists: ['INK', 'Field', 'General'],
-    soundEnabled: true
+    soundEnabled: true,
+    cloudSyncEnabled: true,
+    boothId: 'boothsuay'
   };
 
   try {
