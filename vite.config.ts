@@ -8,5 +8,5 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
-  base: '/web-barcode-pos/',
+  base: '/Booth_POS/',
 })
