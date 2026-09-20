@@ -192,7 +192,7 @@ export function App() {
 
   // Standard Cashier Terminal Mode
   return (
-    <div className="h-screen w-screen flex flex-col bg-slate-100 overflow-hidden font-sans">
+    <div className="h-screen w-screen flex flex-col bg-slate-950 text-slate-100 overflow-hidden font-sans">
       {/* Top Navbar */}
       <Navbar
         currentTab={currentTab}

@@ -7,6 +7,7 @@
   user-select: none;
   -webkit-user-select: none;
   touch-action: manipulation;
+  color-scheme: dark;
 }
 
 html, body, #root {
@@ -15,10 +16,11 @@ html, body, #root {
   margin: 0;
   padding: 0;
   overflow: hidden;
-  background-color: #f8fafc;
+  background-color: #090d16;
+  color: #f1f5f9;
 }
 
-/* Custom scrollbars for tablet / desktop */
+/* Dark theme scrollbars for tablet / desktop */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -29,10 +31,10 @@ html, body, #root {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
+  background: #334155;
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+  background: #475569;
 }

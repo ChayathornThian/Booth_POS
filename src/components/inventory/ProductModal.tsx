@@ -113,19 +113,19 @@ export const ProductModal: React.FC<ProductModalProps> = ({
   const popularEmojis = ['✨', '💖', '🌸', '🎨', '💌', '🔑', '📌', '🖼️', '📓', '🎀', '☕', '🍂', '🌅'];
 
   return (
-    <div className="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-xs flex items-center justify-center p-4 animate-in fade-in duration-150 select-none">
-      <div className="bg-white rounded-3xl w-full max-w-lg shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+    <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in duration-150 select-none">
+      <div className="bg-slate-900 rounded-3xl w-full max-w-lg shadow-2xl border border-slate-800 overflow-hidden flex flex-col max-h-[90vh]">
         {/* Header */}
-        <div className="p-5 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+        <div className="p-5 border-b border-slate-800 flex items-center justify-between bg-slate-950/50">
           <div>
-            <h2 className="text-xl font-black text-slate-900">
+            <h2 className="text-xl font-black text-white">
               {productToEdit ? 'Edit Product' : 'Add New Product'}
             </h2>
             <p className="text-xs text-slate-400">Save product details and local image to iPad storage</p>
           </div>
           <button
             onClick={onClose}
-            className="w-10 h-10 rounded-full bg-slate-100 text-slate-400 hover:text-slate-700 hover:bg-slate-200 flex items-center justify-center transition-colors"
+            className="w-10 h-10 rounded-full bg-slate-800 text-slate-400 hover:text-white hover:bg-slate-700 flex items-center justify-center transition-colors cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
@@ -135,18 +135,18 @@ export const ProductModal: React.FC<ProductModalProps> = ({
         <form onSubmit={handleSubmit} className="p-6 overflow-y-auto space-y-4 flex-1">
           {/* Local Photo Upload Area */}
           <div>
-            <label className="text-xs font-bold text-slate-600 block mb-1">
+            <label className="text-xs font-bold text-slate-400 block mb-1">
               Local Product Image (Stored 100% Offline in IndexedDB):
             </label>
             <div className="flex items-center gap-4">
-              <div className="w-20 h-20 rounded-2xl bg-slate-100 border-2 border-dashed border-slate-300 flex items-center justify-center overflow-hidden shrink-0 relative group">
+              <div className="w-20 h-20 rounded-2xl bg-slate-950 border-2 border-dashed border-slate-800 flex items-center justify-center overflow-hidden shrink-0 relative group">
                 {imagePreview ? (
                   <>
                     <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
                     <button
                       type="button"
                       onClick={handleRemoveImage}
-                      className="absolute inset-0 bg-rose-900/70 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                      className="absolute inset-0 bg-rose-950/80 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
                     >
                       <Trash2 className="w-5 h-5" />
                     </button>
@@ -157,8 +157,8 @@ export const ProductModal: React.FC<ProductModalProps> = ({
               </div>
 
               <div className="flex-1">
-                <label className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs cursor-pointer transition-colors border border-slate-200">
-                  <Upload className="w-4 h-4 text-indigo-600" />
+                <label className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs cursor-pointer transition-colors border border-slate-700">
+                  <Upload className="w-4 h-4 text-indigo-400" />
                   <span>{imagePreview ? 'Change Local Photo' : 'Select Photo from iPad'}</span>
                   <input
                     type="file"
@@ -167,7 +167,7 @@ export const ProductModal: React.FC<ProductModalProps> = ({
                     className="hidden"
                   />
                 </label>
-                <p className="text-[11px] text-slate-400 mt-1">
+                <p className="text-[11px] text-slate-500 mt-1">
                   Saved permanently on this device. Loads at 0ms with zero internet.
                 </p>
               </div>
@@ -176,7 +176,7 @@ export const ProductModal: React.FC<ProductModalProps> = ({
 
           {/* Quick Emoji Picker */}
           <div>
-            <label className="text-xs font-bold text-slate-600 block mb-1">
+            <label className="text-xs font-bold text-slate-400 block mb-1">
               Or Choose Quick Emoji Icon:
             </label>
             <div className="flex flex-wrap gap-1.5">
@@ -185,8 +185,8 @@ export const ProductModal: React.FC<ProductModalProps> = ({
                   type="button"
                   key={e}
                   onClick={() => setEmoji(e)}
-                  className={`w-8 h-8 rounded-lg text-lg flex items-center justify-center transition-all ${
-                    emoji === e ? 'bg-indigo-600 text-white scale-110 shadow-xs' : 'bg-slate-100 hover:bg-slate-200'
+                  className={`w-8 h-8 rounded-lg text-lg flex items-center justify-center transition-all cursor-pointer ${
+                    emoji === e ? 'bg-indigo-600 text-white scale-110 shadow-md shadow-indigo-600/30' : 'bg-slate-800/80 hover:bg-slate-700 text-slate-300'
                   }`}
                 >
                   {e}
@@ -197,21 +197,21 @@ export const ProductModal: React.FC<ProductModalProps> = ({
 
           {/* Product Name */}
           <div>
-            <label className="text-xs font-bold text-slate-600 block mb-1">Product Name *</label>
+            <label className="text-xs font-bold text-slate-400 block mb-1">Product Name *</label>
             <input
               type="text"
               required
               value={name}
               onChange={e => setName(e.target.value)}
               placeholder="e.g. Sticker Sheet A5 Blooms"
-              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm font-semibold text-slate-800 focus:bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 outline-none"
+              className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm font-semibold text-white focus:bg-slate-900 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 outline-none placeholder:text-slate-600"
             />
           </div>
 
           {/* Price & Stock */}
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="text-xs font-bold text-slate-600 block mb-1">Price (฿) *</label>
+              <label className="text-xs font-bold text-slate-400 block mb-1">Price (฿) *</label>
               <input
                 type="number"
                 required
@@ -220,18 +220,18 @@ export const ProductModal: React.FC<ProductModalProps> = ({
                 value={price}
                 onChange={e => setPrice(e.target.value)}
                 placeholder="55"
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm font-semibold text-slate-800 focus:bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 outline-none"
+                className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm font-semibold text-white focus:bg-slate-900 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 outline-none placeholder:text-slate-600"
               />
             </div>
             <div>
-              <label className="text-xs font-bold text-slate-600 block mb-1">Initial Stock</label>
+              <label className="text-xs font-bold text-slate-400 block mb-1">Initial Stock</label>
               <input
                 type="number"
                 min="0"
                 value={stock}
                 onChange={e => setStock(e.target.value)}
                 placeholder="50"
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm font-semibold text-slate-800 focus:bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 outline-none"
+                className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm font-semibold text-white focus:bg-slate-900 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 outline-none placeholder:text-slate-600"
               />
             </div>
           </div>
@@ -239,14 +239,14 @@ export const ProductModal: React.FC<ProductModalProps> = ({
           {/* Category & SubCategory */}
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="text-xs font-bold text-slate-600 block mb-1">Category</label>
+              <label className="text-xs font-bold text-slate-400 block mb-1">Category</label>
               <input
                 type="text"
                 list="categories-list"
                 value={category}
                 onChange={e => setCategory(e.target.value)}
                 placeholder="Stickers, Postcard..."
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm font-semibold text-slate-800 focus:bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 outline-none"
+                className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm font-semibold text-white focus:bg-slate-900 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 outline-none placeholder:text-slate-600"
               />
               <datalist id="categories-list">
                 {existingCategories.map(c => (
@@ -255,27 +255,27 @@ export const ProductModal: React.FC<ProductModalProps> = ({
               </datalist>
             </div>
             <div>
-              <label className="text-xs font-bold text-slate-600 block mb-1">Sub-Category</label>
+              <label className="text-xs font-bold text-slate-400 block mb-1">Sub-Category</label>
               <input
                 type="text"
                 value={subCategory}
                 onChange={e => setSubCategory(e.target.value)}
                 placeholder="Sheet A5, Die-cut..."
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm font-semibold text-slate-800 focus:bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 outline-none"
+                className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm font-semibold text-white focus:bg-slate-900 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 outline-none placeholder:text-slate-600"
               />
             </div>
           </div>
 
           {/* Artist Selection */}
           <div>
-            <label className="text-xs font-bold text-slate-600 block mb-1">Artist / Creator</label>
+            <label className="text-xs font-bold text-slate-400 block mb-1">Artist / Creator</label>
             <select
               value={artist}
               onChange={e => setArtist(e.target.value)}
-              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm font-semibold text-slate-800 focus:bg-white focus:border-indigo-500 outline-none"
+              className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm font-semibold text-white focus:bg-slate-900 focus:border-indigo-500 outline-none cursor-pointer"
             >
               {settings.artists.map(a => (
-                <option key={a} value={a}>
+                <option key={a} value={a} className="bg-slate-900 text-white">
                   {a}
                 </option>
               ))}
@@ -283,42 +283,42 @@ export const ProductModal: React.FC<ProductModalProps> = ({
           </div>
 
           {/* Bundle Deal Section */}
-          <div className="p-3.5 bg-amber-50/70 border border-amber-200 rounded-2xl space-y-2.5">
+          <div className="p-3.5 bg-amber-950/30 border border-amber-900/50 rounded-2xl space-y-2.5">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <Layers className="w-4 h-4 text-amber-700" />
-                <span className="text-xs font-bold text-amber-900">Specific Item Bundle Deal</span>
+                <Layers className="w-4 h-4 text-amber-400" />
+                <span className="text-xs font-bold text-amber-300">Specific Item Bundle Deal</span>
               </div>
               <input
                 type="checkbox"
                 checked={isBundle}
                 onChange={e => setIsBundle(e.target.checked)}
-                className="w-4 h-4 text-amber-600 rounded-sm focus:ring-amber-500 cursor-pointer"
+                className="w-4 h-4 text-amber-500 rounded-sm focus:ring-amber-500 cursor-pointer accent-amber-500"
               />
             </div>
 
             {isBundle && (
               <div className="grid grid-cols-2 gap-3 pt-1">
                 <div>
-                  <label className="text-[11px] font-bold text-amber-800 block mb-1">Bundle Quantity</label>
+                  <label className="text-[11px] font-bold text-amber-400 block mb-1">Bundle Quantity</label>
                   <input
                     type="number"
                     min="2"
                     value={bundleQty}
                     onChange={e => setBundleQty(e.target.value)}
                     placeholder="e.g. 2"
-                    className="w-full bg-white border border-amber-300 rounded-xl px-3 py-2 text-xs font-semibold outline-none"
+                    className="w-full bg-slate-950 border border-amber-800/60 rounded-xl px-3 py-2 text-xs font-semibold text-amber-200 outline-none focus:border-amber-400"
                   />
                 </div>
                 <div>
-                  <label className="text-[11px] font-bold text-amber-800 block mb-1">Bundle Price (฿)</label>
+                  <label className="text-[11px] font-bold text-amber-400 block mb-1">Bundle Price (฿)</label>
                   <input
                     type="number"
                     min="1"
                     value={bundlePrice}
                     onChange={e => setBundlePrice(e.target.value)}
                     placeholder="e.g. 100"
-                    className="w-full bg-white border border-amber-300 rounded-xl px-3 py-2 text-xs font-semibold outline-none"
+                    className="w-full bg-slate-950 border border-amber-800/60 rounded-xl px-3 py-2 text-xs font-semibold text-amber-200 outline-none focus:border-amber-400"
                   />
                 </div>
               </div>
@@ -329,7 +329,7 @@ export const ProductModal: React.FC<ProductModalProps> = ({
           <div className="pt-2">
             <button
               type="submit"
-              className="w-full py-3.5 rounded-2xl bg-indigo-600 hover:bg-indigo-700 active:scale-98 text-white font-extrabold text-sm shadow-md shadow-indigo-600/25 transition-all cursor-pointer"
+              className="w-full py-3.5 rounded-2xl bg-indigo-600 hover:bg-indigo-500 active:scale-98 text-white font-extrabold text-sm shadow-lg shadow-indigo-600/30 transition-all cursor-pointer"
             >
               {productToEdit ? 'Save Changes' : 'Create Product'}
             </button>
